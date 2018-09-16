@@ -15,6 +15,8 @@ class App extends Component {
       blogArticles: [],
       isActiveArticle: false,
       activeArticle: null,
+      postsPerPage: 5,
+      currentPage: 1,
     };
   }
   componentDidMount() {
