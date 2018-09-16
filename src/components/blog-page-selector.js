@@ -29,7 +29,7 @@ export default class BlogPageSelector extends Component {
     return (
       pages.map((isActive, index) => {
         return (
-          <a href="" className={'blog-specific-page-link' + isActive ? 'blog-specific-page-link-active' : ''} data-page={index + 1} onClick={this.props.specificPageButtonClickHandler}>{index + 1}</a>
+          <a href="" className={'blog-specific-page-link' + isActive ? 'blog-specific-page-link-active' : ''} key={index} data-page={index + 1} onClick={this.props.specificPageButtonClickHandler}>{index + 1}</a>
         );
       })
     );
