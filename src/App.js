@@ -5,6 +5,7 @@ import WPRestAPI from './wp-rest-api';
 
 // Custom components
 import BlogArticlePreview from './components/blog-article-preview';
+import BlogPageSelector from './components/blog-page-selector';
 import SingleBlogArticle from './components/single-blog-article';
 import Footer from './components/footer'
 
@@ -44,6 +45,36 @@ class App extends Component {
       </div>
     );
   }
+  renderBlogPageSelector() {
+    return (
+      <BlogPageSelector
+        currentPage={this.state.currentPage}
+        blogArticlesAmount={this.state.blogArticles.length}
+        postsPerPage={this.state.postsPerPage}
+        previousPageButtonClickHandler={this.previousPageButtonClicked.bind(this)}
+        nextPageClickHandler={this.nextPageButtonClicked.bind(this)}
+        specificPageButtonClickHandler={this.specificPageButtonClicked.bind(this)}
+      />
+    );
+  }
+  previousPageButtonClicked(event) {
+    event.preventDefault();
+    this.setState({
+      currentPage: this.state.currentPage - 1,
+    });
+  }
+  nextPageButtonClicked(event) {
+    event.preventDefault();
+    this.setState({
+      currentPage: this.state.currentPage + 1,
+    });
+  }
+  specificPageButtonClicked(event) {
+    event.preventDefault();
+    this.setState({
+      currentPage: event.target.dataset.page,
+    });
+  }
   blogArticleClicked(event) {
     event.preventDefault();
     this.setState({
@@ -52,9 +83,13 @@ class App extends Component {
     });
   }
   blogArticlePreviewList() {
+    var currentPage = this.state.currentPage;
+    var lastPostOnPage = currentPage * this.state.postsPerPage - 1;
+    var firstPostOnPage = lastPostOnPage - this.state.postsPerPage + 1;
     return (
       this.state.blogArticles.map((article, index) => {
-        return <BlogArticlePreview articleData={article} key={index} articleID={index} clickHandler={this.blogArticleClicked.bind(this)}/>;
+      return ( index >= firstPostOnPage && index <= lastPostOnPage ) ?
+        <BlogArticlePreview articleData={article} key={index} articleID={index} clickHandler={this.blogArticleClicked.bind(this)}/> : '';
       })
     );
   }
@@ -69,6 +104,7 @@ class App extends Component {
         </header>
         {this.state.isActiveArticle ? this.renderBackHomeButton() : ''}
         {this.state.isActiveArticle ? this.singleBlogArticle() : this.blogArticlePreviewList()}
+        {this.state.isActiveArticle ? '' : this.renderBlogPageSelector()}
         <Footer />
       </div>
     );
