@@ -3,6 +3,8 @@ import Utils from './../utils.js'
 
 export default class SingleBlogArticle extends Component {
   render() {
+    // Always view the article from the beginning
+    window.scrollTo(0, 0);
     return (
       <article className="blog-article">
         <h1 className="blog-article-title" dangerouslySetInnerHTML={{__html: this.props.articleData.title ? this.props.articleData.title.rendered : ''}}></h1>
